@@ -1,126 +1,262 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Happy Birthday Fan</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at top, #1b2735 0%, #090a0f 100%);
-      overflow: hidden;
-      font-family: monospace;
-      color: #f8f8f2;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy Birthday Fan</title>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top, #1b2735 0%, #090a0f 100%);
+            font-family: monospace;
+            color: #f8f8f2;
+            overflow: hidden;
+        }
 
-    .center {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-    }
+        /* SCENE */
+        .scene {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
 
-    pre {
-      font-size: clamp(9px, 2.8vw, 18px);
-      line-height: 1.2;
-      text-align: center;
-      animation: glow 3s ease-in-out infinite;
-      white-space: pre;
-    }
+        /* ASCII BACKGROUND */
+        .ascii {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.22;
+            animation: asciiFloat 14s ease-in-out infinite;
+            pointer-events: none;
+        }
 
-    .han {
-      font-size: clamp(28px, 10vw, 64px);
-      margin-top: 12px;
-      letter-spacing: 8px;
-      animation: glow 2.5s ease-in-out infinite;
-    }
+        .ascii pre {
+            font-size: 6.8px;
+            line-height: 1.05;
+            white-space: pre;
+            text-align: center;
+            filter: blur(0.25px);
+        }
 
-    @keyframes glow {
-      0%, 100% { text-shadow: 0 0 6px #ff79c6, 0 0 20px #bd93f9; }
-      50% { text-shadow: 0 0 20px #50fa7b, 0 0 40px #8be9fd; }
-    }
+        /* CONTENT */
+        .content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
 
-    svg {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
+        .han {
+            font-size: 78px;
+            margin-bottom: 10px;
+            animation: glow 2.5s infinite, float 4s ease-in-out infinite;
+        }
 
-    .spark {
-      animation: floatUp linear infinite;
-      opacity: 0.8;
-    }
+        .title {
+            font-size: 28px;
+            letter-spacing: 3px;
+            margin-bottom: 10px;
+            position: relative;
+            animation: popIn 1.6s ease forwards, shimmer 3s linear infinite;
+        }
 
-    @keyframes floatUp {
-      from { transform: translateY(100vh); opacity: 0; }
-      10% { opacity: 1; }
-      to { transform: translateY(-10vh); opacity: 0; }
-    }
+        .title::after {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 8px;
+            background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.25), transparent 70%);
+            animation: sweep 2.8s infinite;
+        }
 
-    footer {
-      position: absolute;
-      bottom: 16px;
-      width: 100%;
-      text-align: center;
-      font-size: 13px;
-      opacity: 0.7;
-      animation: fadeIn 4s ease forwards;
-    }
+        .name {
+            font-size: 20px;
+            letter-spacing: 6px;
+            opacity: 0;
+            animation: popIn 1.8s ease forwards 0.6s, glowPulse 2.8s infinite;
+        }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 0.7; transform: translateY(0); }
-    }
-  </style>
+        /* CONFETTI */
+        .confetti {
+            position: absolute;
+            top: -10px;
+            width: 6px;
+            height: 10px;
+            border-radius: 50%;
+            opacity: 0.8;
+            z-index: 1;
+            animation-name: fall;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translate3d(0, 0, 0) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate3d(var(--x, 0vw), 110vh, 0) rotate(360deg);
+                opacity: 0.8;
+            }
+        }
+
+        /* FOOTER */
+        footer {
+            position: absolute;
+            bottom: 14px;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+            opacity: 0.6;
+            z-index: 2;
+        }
+
+        /* ANIMATIONS */
+        @keyframes glow {
+
+            0%,
+            100% {
+                text-shadow: 0 0 10px #ff79c6, 0 0 30px #bd93f9;
+            }
+
+            50% {
+                text-shadow: 0 0 24px #50fa7b, 0 0 60px #8be9fd;
+            }
+        }
+
+        @keyframes shimmer {
+            0% {
+                text-shadow: 0 0 10px #ff79c6;
+            }
+
+            50% {
+                text-shadow: 0 0 28px #8be9fd;
+            }
+
+            100% {
+                text-shadow: 0 0 10px #ff79c6;
+            }
+        }
+
+        @keyframes glowPulse {
+
+            0%,
+            100% {
+                text-shadow: 0 0 8px #bd93f9;
+            }
+
+            50% {
+                text-shadow: 0 0 30px #50fa7b;
+            }
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.92) translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        @keyframes sweep {
+            0% {
+                transform: translateX(-120%);
+            }
+
+            100% {
+                transform: translateX(120%);
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        @keyframes asciiFloat {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+    </style>
 </head>
+
 <body>
+    <div class="scene">
 
-  <svg viewBox="0 0 100 100" preserveAspectRatio="none">
-    <circle class="spark" cx="10" cy="90" r="0.6" fill="#ff79c6" style="animation-duration: 8s" />
-    <circle class="spark" cx="25" cy="95" r="0.4" fill="#8be9fd" style="animation-duration: 10s" />
-    <circle class="spark" cx="40" cy="92" r="0.5" fill="#50fa7b" style="animation-duration: 7s" />
-    <circle class="spark" cx="55" cy="96" r="0.3" fill="#f1fa8c" style="animation-duration: 9s" />
-    <circle class="spark" cx="70" cy="94" r="0.6" fill="#bd93f9" style="animation-duration: 11s" />
-    <circle class="spark" cx="85" cy="97" r="0.4" fill="#ffb86c" style="animation-duration: 8.5s" />
-  </svg>
-
-  <div class="center">
-<pre>
+        <!-- ASCII BACKGROUND -->
+        <div class="ascii">
+            <pre>
 ██╗  ██╗ █████╗ ██████╗ ██████╗ ██╗   ██╗
 ██║  ██║██╔══██╗██╔══██╗██╔══██╗╚██╗ ██╔╝
-███████║███████║██████╔╝██████╔╝ ╚████╔╝ 
-██╔══██║██╔══██║██╔═══╝ ██╔═══╝   ╚██╔╝  
-██║  ██║██║  ██║██║     ██║        ██║   
-╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝        ╚═╝   
-
-██████╗ ██╗██████╗ ████████╗██╗  ██╗██████╗  █████╗ ██╗   ██╗
-██╔══██╗██║██╔══██╗╚══██╔══╝██║  ██║██╔══██╗██╔══██╗╚██╗ ██╔╝
-██████╔╝██║██████╔╝   ██║   ███████║██║  ██║███████║ ╚████╔╝ 
-██╔══██╗██║██╔══██╗   ██║   ██╔══██║██║  ██║██╔══██║  ╚██╔╝  
-██████╔╝██║██║  ██║   ██║   ██║  ██║██████╔╝██║  ██║   ██║   
-╚═════╝ ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝   ╚═╝   
-
-███████╗ █████╗ ███╗   ██╗
-██╔════╝██╔══██╗████╗  ██║
-█████╗  ███████║██╔██╗ ██║
-██╔══╝  ██╔══██║██║╚██╗██║
-██║     ██║  ██║██║ ╚████║
-╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝
+███████║███████║██████╔╝██████╔╝ ╚████╔╝
+██╔══██║██╔══██║██╔═══╝ ██╔═══╝   ╚██╔╝
+██║  ██║██║  ██║██║     ██║        ██║
+╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝        ╚═╝
 
 ✨  H A P P Y   B I R T H D A Y   ✨
 </pre>
-<div class="han">凡</div>
-<pre>F A N</pre>
-  </div>
+        </div>
 
-  <footer>
-    made with ❤️ by ತೇಜಸ್
-  </footer>
+        <!-- FOREGROUND CONTENT -->
+        <div class="content">
+            <div class="han">凡</div>
+            <div class="title">Happy Birthday</div>
+            <div class="name">F A N</div>
+        </div>
+
+        <footer>made with ❤️ by ತೇಜಸ್</footer>
+    </div>
+
+    <!-- CONFETTI SCRIPT -->
+    <script>
+        const colors = ['#ff79c6', '#8be9fd', '#50fa7b', '#f1fa8c', '#bd93f9', '#ffb86c'];
+        for (let i = 0; i < 50; i++) {
+            const c = document.createElement('div');
+            c.className = 'confetti';
+            const size = Math.random() * 6 + 4;
+            c.style.width = `${size}px`;
+            c.style.height = `${size}px`;
+            c.style.background = colors[Math.floor(Math.random() * colors.length)];
+            c.style.left = `${Math.random() * 100}vw`;
+            c.style.setProperty('--x', `${(Math.random() - 0.5) * 20}vw`); // horizontal drift
+            c.style.animationDuration = `${3 + Math.random() * 5}s`;
+            c.style.animationDelay = `${Math.random() * 5}s`;
+            document.body.appendChild(c);
+        }
+    </script>
 
 </body>
+
 </html>
